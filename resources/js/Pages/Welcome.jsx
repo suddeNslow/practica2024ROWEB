@@ -1,4 +1,5 @@
 import { Link, Head } from '@inertiajs/react';
+import Footer from '../Layouts/Footer.jsx'
 
 export default function Welcome({ auth, laravelVersion, phpVersion }) {
     const handleImageError = () => {
@@ -11,16 +12,16 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
     return (
         <>
             <Head title="Welcome" />
-            <div className="bg-gray-50 text-black/50 dark:bg-black dark:text-white/50">
+            <div className="bg-amber-300 text-black/50 dark:bg-gray-200 dark:text-white/50">
                 <img
                     id="background"
-                    className="absolute -left-20 top-0 max-w-[877px]"
+                    className="fixed -left-60 top-0 max-w-[877px]"
                     src="https://laravel.com/assets/img/welcome/background.svg"
                 />
                 <div className="relative min-h-screen flex flex-col items-center justify-center selection:bg-[#FF2D20] selection:text-white">
                     <div className="relative w-full max-w-2xl px-6 lg:max-w-7xl">
-                        <header className="grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3">
-                            <div className="flex lg:justify-center lg:col-start-2">
+                        <header className="sticky top-0 grid grid-cols-2 items-center gap-2 py-10 lg:grid-cols-3 bg-amber-500 bg-opacity-50 rounded-full">
+                            <div className="flex lg:justify-center">
                                 <svg
                                     className="h-12 w-auto text-white lg:h-16 lg:text-[#FF2D20]"
                                     viewBox="0 0 62 65"
@@ -33,7 +34,12 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                                     />
                                 </svg>
                             </div>
-                            <nav className="-mx-3 flex flex-1 justify-end">
+
+                            <div className="mx-3 flex flex-1 justify-self-center text-xl font-bold text-black">
+                                Piscina Titlu
+                            </div>
+                            
+                            <nav className="-mx-3 flex flex-1 justify-self-center">
                                 {auth.user ? (
                                     <Link
                                         href={route('dashboard')}
@@ -329,7 +335,7 @@ export default function Welcome({ auth, laravelVersion, phpVersion }) {
                         </main>
 
                         <footer className="py-16 text-center text-sm text-black dark:text-white/70">
-                            Laravel v{laravelVersion} (PHP v{phpVersion})
+                            <Footer />
                         </footer>
                     </div>
                 </div>
