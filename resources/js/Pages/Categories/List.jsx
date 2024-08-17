@@ -6,13 +6,6 @@ import {faPencil, faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
 
 
 export default function List({categories}) {
-    const {delete: deleteCategory} = useForm({});
-
-    // const handleDelete = (id) => {
-    //     console.log(id);
-    //
-    //     deleteCategory(route('categories.delete', [id]));
-    // }
 
     return (
         <AuthenticatedLayout>
@@ -45,10 +38,15 @@ export default function List({categories}) {
                                             <FontAwesomeIcon icon={faPencil} className={'text-blue-600'}/>
                                         </Link>
 
-                                        {/*TODO as form*/}
-                                        {/*<Link className={"ml-2"} onClick={() => handleDelete(category.id)}>*/}
-                                        {/*    <FontAwesomeIcon icon={faTrash} className={'text-red-600'}/>*/}
-                                        {/*</Link>*/}
+                                        <form onSubmit={(e) => { 
+                                            e.preventDefault(); 
+                                            handleDelete(category.id);
+                                        }} className={"inline"}>
+                                            <button type="submit" className={"ml-2"}>
+                                                <FontAwesomeIcon icon={faTrash} className={'text-red-600'}/>
+                                            </button>
+                                        </form>
+
                                     </div>
                                 </Fragment>
                             })}

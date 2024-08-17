@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -34,6 +35,16 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::get('/edit/{category}', [CategoryController::class, 'update'])->name('categories.update');
         Route::post('store/{category?}', [CategoryController::class, 'store'])->name('categories.store');
         Route::delete('delete/{category}', [CategoryController::class, 'delete'])->name('categories.delete');
+    });
+
+    Route::group([
+        'prefix' => 'products',
+    ], function () {
+        Route::get('/', [ProductController::class, 'list'])->name('products.list');
+        Route::get('/create', [ProductController::class, 'create'])->name('products.create');
+        Route::get('/edit/{product}', [ProductController::class, 'update'])->name('products.update');
+        Route::post('store/{product?}', [ProductController::class, 'store'])->name('products.store');
+        Route::delete('delete/{product}', [ProductController::class, 'delete'])->name('products.delete');
     });
 });
 
