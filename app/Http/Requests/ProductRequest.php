@@ -2,18 +2,18 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use App\Models\Product;
+use Illuminate\Foundation\Http\FormRequest;
 
 class ProductRequest extends FormRequest
 {
     public function rules(): array
     {
         return [
-            'category_id' => ['required', 'exists:categories,id'], // Foreign key validation
+            'category_id' => ['required', 'exists:categories,id'],
             'name' => ['required', 'string', 'max:255'],
-            'price' => ['required', 'numeric', 'min:0'], // Ensures price is a positive number
-            'description' => ['nullable', 'string'], // Allows description to be null
+            'price' => ['required', 'numeric'],
+            'description' => ['required', 'string'],
         ];
     }
 
@@ -26,7 +26,7 @@ class ProductRequest extends FormRequest
         $product->category_id = $this->get('category_id');
         $product->name = $this->get('name');
         $product->price = $this->get('price');
-        $product->description = $this->get('description', ''); // Defaults to empty string if not provided
+        $product->description = $this->get('description');
         $product->save();
     }
 }

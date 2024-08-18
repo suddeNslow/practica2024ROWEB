@@ -4,8 +4,14 @@ import {Fragment} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPencil, faPlus, faTrash} from "@fortawesome/free-solid-svg-icons";
 
-
 export default function List({categories}) {
+    const {delete: deleteCategory} = useForm({});
+
+    const handleDelete = (id) => {
+        if (confirm('Are you sure you want to delete this category?')) {
+            deleteCategory(route('categories.delete', [id]));
+        }
+    };
 
     return (
         <AuthenticatedLayout>
@@ -20,7 +26,6 @@ export default function List({categories}) {
                         </Link>
                     </div>
 
-
                     <div className="mt-6">
                         <div className={'grid grid-cols-4'}>
                             <div className={'font-bold mb-3'}>ID</div>
@@ -28,8 +33,8 @@ export default function List({categories}) {
                             <div className={'font-bold mb-3'}>Order</div>
                             <div className={'font-bold mb-3'}>Actions</div>
 
-                            {categories.map((category, index) => {
-                                return <Fragment key={index}>
+                            {categories.map((category, index) => (
+                                <Fragment key={index}>
                                     <div className={'mb-2'}>{category.id}</div>
                                     <div className={'mb-2'}>{category.name}</div>
                                     <div className={'mb-2'}>{category.order}</div>
@@ -46,10 +51,9 @@ export default function List({categories}) {
                                                 <FontAwesomeIcon icon={faTrash} className={'text-red-600'}/>
                                             </button>
                                         </form>
-
                                     </div>
                                 </Fragment>
-                            })}
+                            ))}
                         </div>
                     </div>
                 </div>
