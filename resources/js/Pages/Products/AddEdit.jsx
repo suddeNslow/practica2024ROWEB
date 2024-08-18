@@ -5,15 +5,16 @@ import TextInput from "@/Components/TextInput.jsx";
 import InputError from "@/Components/InputError.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
 
-export default function AddEdit({ product = {}, categories = [] }) {
+export default function AddEdit({ product = {}, categories = [], images = [] }) {
     console.log("Product:", product);
     console.log("Categories:", categories);
-    
+
     const { data, setData, post, errors, processing } = useForm({
         category_id: product?.category_id || '',
         name: product?.name || '',
         price: product?.price || '',
         description: product?.description || '',
+        images: [], // Initialize images array
     });
 
     const submit = (e) => {
@@ -88,10 +89,33 @@ export default function AddEdit({ product = {}, categories = [] }) {
                             <InputError className="mt-2" message={errors.description} />
                         </div>
 
+                        <div>
+                            <InputLabel htmlFor="images" value="Product Images" />
+                            <input
+                                type="file"
+                                id="images"
+                                multiple
+                                className="mt-1 block w-full"
+                                onChange={(e) => setData('images', e.target.files)}
+                            />
+                            <InputError className="mt-2" message={errors.images} />
+                        </div>
+
                         <div className="flex items-center gap-4">
                             <PrimaryButton disabled={processing}>Save</PrimaryButton>
                         </div>
                     </form>
+
+                    {images && images.length > 0 && (
+                        <div className="mt-6">
+                            <h3 className="text-lg font-medium">Current Images</h3>
+                            <div className="grid grid-cols-3 gap-4 mt-4">
+                                {images.map((image, index) => (
+                                    <img key={index} src={`/storage/${image.path}`} alt={`Product Image ${index}`} className="w-full" />
+                                ))}
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
         </AuthenticatedLayout>

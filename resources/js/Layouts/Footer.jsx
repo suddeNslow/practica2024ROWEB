@@ -1,13 +1,10 @@
-import React from 'react';
 
-function Footer(){
-    return(
-        <p className="mx-3 flex flex-1 justify-center text-xl font-bold text-black text-center text-sm">
-            Contact us
-            <br></br>
-            &copy; Piscina Title
-        </p>
+export default function Footer() {
+    return (
+        <footer className="w-full py-4 bg-amber-300 text-white">
+            <div className="flex container mx-auto font-bold">
+                <div>&copy; Piscina title.</div>
+            </div>
+        </footer>
     );
 }
-
-export default Footer

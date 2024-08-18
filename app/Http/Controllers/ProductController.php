@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
 use App\Http\Requests\CategoryRequest;
+use App\Models\ProductImage;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -19,23 +20,37 @@ class ProductController extends Controller
     }
 
     public function create()
-    {
-        return Inertia::render('Products/AddEdit', [
-            'categories' => Category::all(),
-        ]);
-    }
+{
+    return Inertia::render('Products/AddEdit', [
+        'categories' => Category::all(),
+    ]);
+}
 
-    public function update(Product $product)
-    {
-        return Inertia::render('Products/AddEdit', [
-            'product' => $product,
-            'categories' => Category::all(),
-        ]);
-    }
+public function update(Product $product)
+{
+    return Inertia::render('Products/AddEdit', [
+        'product' => $product,
+        'categories' => Category::all(),
+        'images' => $product->images, 
+    ]);
+}
 
     public function store(ProductRequest $request, ?Product $product = null)
     {
-        $request->updateOrCreate($product);
+        $product = Product::updateOrCreate(
+            ['id' => $product->id ?? null],
+            $request->except('images') // Exclude 'images' from mass assignment
+        );
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('product_images', 'public');
+                ProductImage::create([
+                    'product_id' => $product->id,
+                    'path' => $path,
+                ]);
+            }
+        }
 
         return redirect()->route('products.list')->with(['success' => 'Product saved.']);
     }
