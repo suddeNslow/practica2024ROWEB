@@ -37,14 +37,12 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::delete('delete/{category}', [CategoryController::class, 'delete'])->name('categories.delete');
     });
 
-    Route::group([
-        'prefix' => 'products',
-    ], function () {
+    Route::prefix('products')->group(function () {
         Route::get('/', [ProductController::class, 'list'])->name('products.list');
         Route::get('/create', [ProductController::class, 'create'])->name('products.create');
-        Route::get('/edit/{product}', [ProductController::class, 'update'])->name('products.update');
-        Route::post('store/{product?}', [ProductController::class, 'store'])->name('products.store');
-        Route::delete('delete/{product}', [ProductController::class, 'delete'])->name('products.delete');
+        Route::get('/edit/{product}', [ProductController::class, 'edit'])->name('products.edit');
+        Route::post('/store/{product?}', [ProductController::class, 'store'])->name('products.store');
+        Route::delete('/delete/{product}', [ProductController::class, 'delete'])->name('products.delete');
     });
 });
 

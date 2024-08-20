@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
-use App\Http\Requests\CategoryRequest;
+use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\Category;
-use App\Models\Product;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -14,51 +14,57 @@ class ProductController extends Controller
 {
     public function list()
     {
-        return Inertia::render('Products/List', [
-            'products' => Product::with('category')->orderBy('name')->get(),
-        ]);
+        $products = Product::with(['category', 'images'])->orderBy('name')->get();
+        return Inertia::render('Products/List', ['products' => $products]);
     }
 
     public function create()
-{
-    return Inertia::render('Products/AddEdit', [
-        'categories' => Category::all(),
-    ]);
-}
+    {
+        $categories = Category::all();
+        return Inertia::render('Products/AddEdit', compact('categories'));
+    }
 
-public function update(Product $product)
-{
-    return Inertia::render('Products/AddEdit', [
-        'product' => $product,
-        'categories' => Category::all(),
-        'images' => $product->images, 
-    ]);
-}
+    public function edit(Product $product)
+    {
+        $categories = Category::all();
+        $images = $product->images;
+        return Inertia::render('Products/AddEdit', compact('product', 'categories', 'images'));
+    }
 
-    public function store(ProductRequest $request, ?Product $product = null)
+    public function store(ProductRequest $request, Product $product = null)
     {
         $product = Product::updateOrCreate(
             ['id' => $product->id ?? null],
-            $request->except('images') // Exclude 'images' from mass assignment
+            $request->validated()
         );
 
         if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $image) {
-                $path = $image->store('product_images', 'public');
-                ProductImage::create([
-                    'product_id' => $product->id,
-                    'path' => $path,
-                ]);
-            }
+            $this->saveImages($request->file('images'), $product->id);
         }
 
-        return redirect()->route('products.list')->with(['success' => 'Product saved.']);
+        return redirect()->route('products.list')->with('success', 'Product saved.');
     }
 
     public function delete(Product $product)
     {
+        foreach ($product->images as $image) {
+            Storage::disk('public')->delete($image->path);
+            $image->delete();
+        }
+        // Then delete the product
         $product->delete();
 
-        return redirect()->route('products.list')->with(['success' => 'Product deleted.']);
+        return redirect()->route('products.list')->with('success', 'Product deleted.');
+    }
+
+    private function saveImages(array $images, int $productId)
+    {
+        foreach ($images as $image) {
+            $path = $image->store('product_images', 'public');
+            ProductImage::create([
+                'product_id' => $productId,
+                'path' => $path,
+            ]);
+        }
     }
 }

@@ -14,6 +14,7 @@ class ProductRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'price' => ['required', 'numeric'],
             'description' => ['required', 'string'],
+            'images.*' => ['nullable', 'image', 'max:2048'], // Image validation
         ];
     }
 
@@ -27,6 +28,7 @@ class ProductRequest extends FormRequest
         $product->name = $this->get('name');
         $product->price = $this->get('price');
         $product->description = $this->get('description');
+        $product->image = $this->get('image');
         $product->save();
     }
 }
