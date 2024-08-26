@@ -1,20 +1,13 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProductController;
-use Illuminate\Foundation\Application;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -37,13 +30,15 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::delete('delete/{category}', [CategoryController::class, 'delete'])->name('categories.delete');
     });
 
-    Route::prefix('products')->group(function () {
+    Route::group([
+        'prefix' => 'products',
+    ], function () {
         Route::get('/', [ProductController::class, 'list'])->name('products.list');
         Route::get('/create', [ProductController::class, 'create'])->name('products.create');
-        Route::get('/edit/{product}', [ProductController::class, 'edit'])->name('products.edit');
-        Route::post('/store/{product?}', [ProductController::class, 'store'])->name('products.store');
-        Route::delete('/delete/{product}', [ProductController::class, 'delete'])->name('products.delete');
+        Route::get('/edit/{product}', [ProductController::class, 'update'])->name('products.update');
+        Route::post('store/{product?}', [ProductController::class, 'store'])->name('products.store');
+        Route::delete('delete/{product}', [ProductController::class, 'delete'])->name('products.delete');
     });
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

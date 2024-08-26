@@ -1,149 +1,142 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, useForm } from '@inertiajs/react';
+import {Head, useForm} from '@inertiajs/react';
 import InputLabel from "@/Components/InputLabel.jsx";
 import TextInput from "@/Components/TextInput.jsx";
 import InputError from "@/Components/InputError.jsx";
 import PrimaryButton from "@/Components/PrimaryButton.jsx";
-import { useState } from 'react';
+import SelectInput from "@/Components/SelectInput.jsx";
+import FileInput from "@/Components/FileInput.jsx";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faTrash} from "@fortawesome/free-solid-svg-icons";
+import {useState} from "react";
 
-export default function AddEdit({ product = {}, categories = [], images = [] }) {
-    // Initialize form data
-    const { data, setData, post, processing, errors } = useForm({
-        category_id: product?.category_id || '',
+export default function AddEdit({categories, product}) {
+    const {data, setData, post, errors, processing} = useForm({
         name: product?.name || '',
-        price: product?.price || '',
         description: product?.description || '',
-        images: [], 
+        category: product?.category_id || '',
+        price: product?.price || '',
+        images: [],
+        deleted_images: []
     });
 
-    const [imagePreviews, setImagePreviews] = useState(images.map(img => `/storage/${img.path}`));
+    const [currentImages, setCurrentImages] = useState(product?.images || []);
 
-    const handleFileChange = (e) => {
-        const files = Array.from(e.target.files);
-
-        setData('images', files);
-
-        const previews = files.map(file => URL.createObjectURL(file));
-        setImagePreviews(previews);
-    };
-
-    // Handle form submission
     const submit = (e) => {
         e.preventDefault();
 
-        const routeName = product.id ? 'products.update' : 'products.store';
-        post(route(routeName, product.id ? [product.id] : undefined), {
-            preserveScroll: true,
-            forceFormData: true,  
-        });
+        let productRoute = product ? route('products.store', [product.id]) : route('products.store');
+        post(productRoute);
     };
 
-    return (
-        <AuthenticatedLayout>
-            <Head title={product?.id ? 'Edit Product' : 'Add Product'} />
-            <div className="py-4 px-4">
-                <div className="text-xl font-bold">{product?.id ? 'Edit Product' : 'Add Product'}</div>
+    const deleteProductImage = (id) => {
+        let updatedImages = currentImages.filter(function( obj ) {
+            return obj.id !== id;
+        });
+        setCurrentImages(updatedImages);
+        setData('deleted_images', [...data.deleted_images, id]);
+    }
 
-                <div className="mt-6">
-                    <form onSubmit={submit} className="mt-6 space-y-6">
-                        <div>
-                            <InputLabel htmlFor="category_id" value="Category" />
-                            <select
-                                id="category_id"
-                                className="mt-1 block w-full"
-                                value={data.category_id}
-                                onChange={(e) => setData('category_id', e.target.value)}
-                                required
-                            >
-                                <option value="">Select a Category</option>
-                                {categories.map((category) => (
-                                    <option key={category.id} value={category.id}>
-                                        {category.name}
-                                    </option>
-                                ))}
-                            </select>
-                            <InputError className="mt-2" message={errors.category_id} />
-                        </div>
+    console.log(currentImages);
 
-                        <div>
-                            <InputLabel htmlFor="name" value="Product Name" />
-                            <TextInput
-                                id="name"
-                                className="mt-1 block w-full"
-                                value={data.name}
-                                onChange={(e) => setData('name', e.target.value)}
-                                required
-                                isFocused
-                            />
-                            <InputError className="mt-2" message={errors.name} />
-                        </div>
+    return (<AuthenticatedLayout>
+            <Head title={product ? 'Edit product' : 'Add product'}/>
+            <div className={'w-full'}>
+                <div className="py-4 px-4">
+                    <div className={'text-xl font-bold'}>{product ? 'Edit product' : 'Add product'}</div>
 
-                        <div>
-                            <InputLabel htmlFor="price" value="Price" />
-                            <TextInput
-                                id="price"
-                                type="number"
-                                step="0.01"
-                                className="mt-1 block w-full"
-                                value={data.price}
-                                onChange={(e) => setData('price', e.target.value)}
-                                required
-                            />
-                            <InputError className="mt-2" message={errors.price} />
-                        </div>
+                    <div className="mt-6">
+                        <form onSubmit={submit} encType='multipart/form-data' className="mt-6 space-y-6">
+                            <div>
+                                <InputLabel htmlFor="name" value="Name"/>
 
-                        <div>
-                            <InputLabel htmlFor="description" value="Description" />
-                            <textarea
-                                id="description"
-                                className="mt-1 block w-full"
-                                value={data.description}
-                                onChange={(e) => setData('description', e.target.value)}
-                                required
-                            />
-                            <InputError className="mt-2" message={errors.description} />
-                        </div>
+                                <TextInput
+                                    id="name"
+                                    className="mt-1 block w-full"
+                                    value={data.name}
+                                    onChange={(e) => setData('name', e.target.value)}
+                                    required
+                                    isFocused
+                                />
 
-                        <div>
-                            <InputLabel htmlFor="images" value="Product Images" />
-                            <input
-                                type="file"
-                                id="images"
-                                multiple
-                                className="mt-1 block w-full"
-                                onChange={handleFileChange}
-                            />
-                            <InputError className="mt-2" message={errors.images} />
-                        </div>
+                                <InputError className="mt-2" message={errors.name}/>
+                            </div>
 
-                        {imagePreviews.length > 0 && (
-                            <div className="mt-4">
-                                <h3 className="text-lg font-medium">Selected Images</h3>
-                                <div className="grid grid-cols-3 gap-4 mt-2">
-                                    {imagePreviews.map((src, index) => (
-                                        <img key={index} src={src} alt={`Selected Image ${index}`} className="w-full" />
+                            <div>
+                                <InputLabel htmlFor="description" value="Description"/>
+
+                                <TextInput
+                                    id="description"
+                                    className="mt-1 block w-full"
+                                    value={data.description}
+                                    onChange={(e) => setData('description', e.target.value)}
+                                    required
+                                />
+
+                                <InputError className="mt-2" message={errors.description}/>
+                            </div>
+
+                            <div>
+                                <InputLabel htmlFor="category" value="Category"/>
+
+                                <SelectInput
+                                    id="category"
+                                    className="mt-1 block w-full"
+                                    value={data.category}
+                                    onChange={(e) => setData('category', e.target.value)}
+                                    required
+                                    options={categories}
+                                />
+
+                                <InputError className="mt-2" message={errors.category}/>
+                            </div>
+
+                            <div>
+                                <InputLabel htmlFor="price" value="Price"/>
+
+                                <TextInput
+                                    id="price"
+                                    type="number"
+                                    className="mt-1 block w-full"
+                                    value={data.price}
+                                    onChange={(e) => setData('price', e.target.value)}
+                                    required
+                                />
+
+                                <InputError className="mt-2" message={errors.price}/>
+                            </div>
+
+                            <div>
+                                <div>Existing images</div>
+                                <div className={'grid grid-cols-6'}>
+                                    {currentImages.map((image) => (<div className={'p-2'} key={image.id}>
+                                            <img alt={''} src={`/storage/${image.path}`} width={200} height={200}/>
+                                            <FontAwesomeIcon onClick={() => deleteProductImage(image.id)} icon={faTrash} className={'text-red-600 ml-2'}/>
+                                        </div>
                                     ))}
                                 </div>
                             </div>
-                        )}
 
-                        <div className="flex items-center gap-4">
-                            <PrimaryButton disabled={processing}>Save</PrimaryButton>
-                        </div>
-                    </form>
+                            <div>
+                                <InputLabel htmlFor="images" value="Images"/>
 
-                    {images.length > 0 && (
-                        <div className="mt-6">
-                            <h3 className="text-lg font-medium">Current Images</h3>
-                            <div className="grid grid-cols-3 gap-4 mt-4">
-                                {images.map((image, index) => (
-                                    <img key={index} src={`/storage/${image.path}`} alt={`Product Image ${index}`} className="w-full" />
-                                ))}
+                                <FileInput
+                                    id="images"
+                                    className="mt-1 block w-full"
+                                    value={data.images}
+                                    multiple={true}
+                                    onChange={(e) => setData('images', e.target.files)}
+                                />
+
+                                <InputError className="mt-2" message={errors.images}/>
                             </div>
-                        </div>
-                    )}
+
+                            <div className="flex items-center gap-4">
+                                <PrimaryButton disabled={processing}>Save</PrimaryButton>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </AuthenticatedLayout>
-    );
+        </AuthenticatedLayout>);
 }

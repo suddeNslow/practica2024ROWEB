@@ -1,7 +1,7 @@
 import {Link, useForm} from '@inertiajs/react';
 import ApplicationLogo from "@/Components/ApplicationLogo.jsx";
 
-export default function Authenticated({children}) {
+export default function Authenticated({children, flash}) {
     const {post} = useForm({});
 
     const submit = (e) => {
@@ -47,6 +47,9 @@ export default function Authenticated({children}) {
                 </button>
             </form>
         </aside>
+
+        {flash && flash.success && <div className={'absolute right-10 top-10 rounded-lg p-4 bg-green-400'}>{flash.success}</div>}
+        {flash && flash.error && <div className={'absolute right-10 top-10 rounded-lg p-4 bg-red-400'}>{flash.error}</div>}
 
         <main className="flex w-5/6">
             {children}
