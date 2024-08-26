@@ -6,6 +6,7 @@ use App\Http\Requests\ProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ProductController extends Controller
