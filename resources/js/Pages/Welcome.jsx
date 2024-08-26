@@ -26,7 +26,7 @@ export default function Welcome({ auth, products, categories }) {
             <div className="flex flex-col min-h-screen bg-amber-100">
                 <img src="/storage/banner/banner.jpg" alt="Banner" className="w-full h-[300px] md:h-[500px] object-cover" />
                 <Navbar auth={auth} />
-                <main className="container flex-1 mx-auto">
+                <main className="container flex-1 mx-auto my-4">
                     <h1 className={'text-3xl mt-6 mb-4'}>Products</h1>
                     <div className="mb-4">
                         <input
@@ -99,6 +99,17 @@ export default function Welcome({ auth, products, categories }) {
                         ))}
                     </div>
                 </main>
+                <div className='text-3xl'>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin nec tellus sed enim bibendum blandit. Donec finibus urna arcu, in tempor augue sodales id. Aliquam nec neque sed felis porttitor feugiat quis eu lectus. Phasellus tristique augue quis magna vehicula efficitur. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Mauris in dolor ut neque efficitur ultricies. Maecenas vestibulum mauris metus, tincidunt placerat nulla blandit sit amet. Quisque sed libero risus. Duis lobortis lacinia dolor non placerat. Praesent venenatis est dui, pharetra rhoncus dui malesuada id. Nulla facilisi. Sed at magna vitae enim molestie euismod nec sed tellus.
+
+Curabitur porta urna a gravida viverra. In placerat, erat tempor porttitor pellentesque, leo neque feugiat lacus, et rhoncus nisl enim sit amet tortor. Integer convallis libero dapibus leo tincidunt convallis. Quisque consectetur, est at consequat ornare, dolor ante luctus dui, vel porta purus sapien eget tellus. Aliquam erat volutpat. Suspendisse vitae massa magna. Curabitur enim odio, tempor at ultrices nec, convallis non neque. Quisque sit amet massa interdum ipsum mattis condimentum. Nullam iaculis eget turpis id tincidunt. Proin eu sapien ligula. Suspendisse sit amet massa ac eros condimentum iaculis eget in mauris. Donec molestie pretium purus, et tempus augue vehicula ut. Praesent eu velit felis. Praesent ultricies placerat lectus sed lacinia.
+
+Duis ut turpis a sem blandit auctor. Donec pharetra a lacus in faucibus. Quisque posuere est tincidunt felis feugiat faucibus. Vestibulum ut blandit enim, id posuere diam. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Proin sed aliquet turpis. Ut aliquam dictum enim sit amet imperdiet. Sed rhoncus lectus sem, quis dictum purus blandit ac. Pellentesque fringilla elit neque, nec pellentesque tortor tempor sit amet. Vestibulum accumsan rhoncus leo a tincidunt. Sed ut ultrices diam. Praesent dui nisi, egestas id nunc at, faucibus convallis ex. Morbi at mattis justo. Suspendisse gravida sed libero vel iaculis. Phasellus commodo molestie nisi nec varius.
+
+Fusce laoreet bibendum dui. Nam sollicitudin, neque sit amet suscipit maximus, odio metus dignissim ex, sed pretium ante dolor et ligula. Donec sit amet volutpat felis. Vivamus pellentesque aliquet purus, sit amet elementum leo fermentum sed. Vivamus tristique laoreet quam, eget pretium est efficitur sit amet. Aenean egestas sem ac lacus hendrerit, at lobortis mi pulvinar. Proin vitae odio vel tortor lobortis tristique. In laoreet vehicula nisl, sed iaculis enim volutpat nec. Morbi eget porta nisi. Etiam pulvinar nisi non hendrerit interdum. Sed tempor nulla ut lorem euismod auctor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Proin est est, facilisis sed sem id, hendrerit sagittis dui. Pellentesque sed semper mi. Quisque non sem nisl. Vestibulum faucibus mi egestas leo cursus egestas.
+
+Vestibulum tempus dui est, in pharetra dolor commodo vitae. Donec placerat aliquet dolor, eget finibus nunc. Nulla lacinia, tellus non congue efficitur, lectus lectus blandit nulla, sit amet blandit diam elit eu arcu. Maecenas vestibulum ante a urna laoreet blandit. Fusce posuere facilisis libero. Nunc tincidunt lectus orci, eget tempor turpis hendrerit sed. Mauris placerat arcu non nunc finibus, eget tincidunt dolor facilisis. Curabitur ipsum sem, dignissim vel arcu vitae, bibendum pulvinar libero. Sed luctus ipsum blandit consequat euismod. Nam congue justo eu massa fermentum blandit. Nulla in dictum tortor.
+                </div>
                 <Footer />
             </div>
         </>
