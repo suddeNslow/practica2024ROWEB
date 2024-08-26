@@ -39,6 +39,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::post('store/{product?}', [ProductController::class, 'store'])->name('products.store');
         Route::delete('delete/{product}', [ProductController::class, 'delete'])->name('products.delete');
     });
+
+    Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 });
 
 require __DIR__ . '/auth.php';

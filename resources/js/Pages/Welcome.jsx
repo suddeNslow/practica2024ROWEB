@@ -24,6 +24,7 @@ export default function Welcome({ auth, products, categories }) {
         <>
             <Head title="Welcome" />
             <div className="flex flex-col min-h-screen bg-amber-100">
+                <img src="/storage/banner/banner.jpg" alt="Banner" className="w-full h-[300px] md:h-[500px] object-cover" />
                 <Navbar auth={auth} />
                 <main className="container flex-1 mx-auto">
                     <h1 className={'text-3xl mt-6 mb-4'}>Products</h1>
@@ -54,10 +55,10 @@ export default function Welcome({ auth, products, categories }) {
                             Search
                         </button>
                     </div>
-                    <div className="grid grid-cols-3">
+                    <div className="grid grid-cols-3 gap-4">
                         {products.data.map((product) => (
-                            <div className={'w-full p-4'} key={product.id}>
-                                <div className={'bg-amber-300 border-4 border-amber-600 rounded-lg'}>
+                            <div className={'w-full p-4 bg-amber-300 border-4 border-amber-600 rounded-lg'} key={product.id}>
+                                <Link href={route('products.show', product.id)} className="block">
                                     <div className="flex items-center justify-center overflow-hidden h-40">
                                         {product.images.length > 0 && (
                                             <img
@@ -77,7 +78,7 @@ export default function Welcome({ auth, products, categories }) {
                                     <div className={'px-2 mt-2 font-medium'}>
                                         &euro;{product.price}
                                     </div>
-                                </div>
+                                </Link>
                             </div>
                         ))}
                     </div>

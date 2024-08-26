@@ -5,20 +5,30 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductRequest;
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class ProductController extends Controller
 {
-    public function list()
-    {
-        // Paginate products
-        $products = Product::with(['category'])->paginate(10)->withQueryString();
+    public function list(Request $request)
+{
+    $categoryId = $request->input('category_id');
 
-        return Inertia::render('Products/List', [
-            'products' => $products
-        ]);
+    $query = Product::with(['category']);
+
+    if ($categoryId) {
+        $query->where('category_id', $categoryId);
     }
+
+    $products = $query->paginate(10)->withQueryString();
+
+    return Inertia::render('Products/List', [
+        'products' => $products,
+        'categories' => Category::all(),
+        'selectedCategory' => $categoryId, 
+    ]);
+}
 
     public function create()
     {
@@ -54,5 +64,15 @@ class ProductController extends Controller
         $product->delete();
 
         return redirect()->route('products.list')->with(['success' => 'Product deleted.']);
+    }
+
+    public function show(Product $product)
+    {
+        // Load related data if necessary
+        $product->load('images'); 
+        
+        return Inertia::render('Products/Detail', [
+            'product' => $product
+        ]);
     }
 }
