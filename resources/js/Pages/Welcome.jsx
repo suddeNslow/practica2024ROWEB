@@ -49,7 +49,7 @@ export default function Welcome({ auth, products, categories }) {
                         </select>
                         <button
                             onClick={handleSearchSubmit}
-                            className="ml-4 p-2 bg-blue-500 text-white rounded"
+                            className="ml-4 p-2 bg-amber-500 text-white rounded"
                         >
                             Search
                         </button>
@@ -57,7 +57,7 @@ export default function Welcome({ auth, products, categories }) {
                     <div className="grid grid-cols-3">
                         {products.data.map((product) => (
                             <div className={'w-full p-4'} key={product.id}>
-                                <div className={'bg-blue-300 border-4 border-blue-600 rounded-lg'}>
+                                <div className={'bg-amber-300 border-4 border-amber-600 rounded-lg'}>
                                     <div className="flex items-center justify-center overflow-hidden h-40">
                                         {product.images.length > 0 && (
                                             <img
@@ -85,7 +85,7 @@ export default function Welcome({ auth, products, categories }) {
                         {products.links.map((link, key) => (
                             <Fragment key={key}>
                                 {link.url && !link.active && (
-                                    <Link className={'bg-blue-500 p-2 text-white mr-2'} href={link.url}>
+                                    <Link className={'bg-amber-500 p-2 text-white mr-2'} href={link.url}>
                                         <span dangerouslySetInnerHTML={{ __html: link.label }} />
                                     </Link>
                                 )}

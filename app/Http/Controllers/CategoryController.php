@@ -11,8 +11,10 @@ class CategoryController extends Controller
 {
     public function list()
     {
+        $categories = Category::paginate(10)->withQueryString();
+
         return Inertia::render('Categories/List', [
-            'categories' => Category::orderBy('order')->get(),
+            'categories' => $categories
         ]);
     }
 

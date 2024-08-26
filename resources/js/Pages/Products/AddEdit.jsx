@@ -21,6 +21,7 @@ export default function AddEdit({categories, product}) {
     });
 
     const [currentImages, setCurrentImages] = useState(product?.images || []);
+    const [newImagePreviews, setNewImagePreviews] = useState([]);
 
     const submit = (e) => {
         e.preventDefault();
@@ -30,16 +31,37 @@ export default function AddEdit({categories, product}) {
     };
 
     const deleteProductImage = (id) => {
-        let updatedImages = currentImages.filter(function( obj ) {
+        let updatedImages = currentImages.filter(function (obj) {
             return obj.id !== id;
         });
         setCurrentImages(updatedImages);
         setData('deleted_images', [...data.deleted_images, id]);
-    }
+    };
 
-    console.log(currentImages);
+    const handleImageChange = (e) => {
+        const files = Array.from(e.target.files);
+        const newImages = [...data.images, ...files];  // Append new images to existing ones
+        setData('images', newImages);
 
-    return (<AuthenticatedLayout>
+        const previews = files.map((file) => {
+            return URL.createObjectURL(file);
+        });
+        setNewImagePreviews([...newImagePreviews, ...previews]);  // Append new previews to existing ones
+    };
+
+    const deleteNewImage = (index) => {
+        const updatedImages = [...data.images];
+        const updatedPreviews = [...newImagePreviews];
+
+        updatedImages.splice(index, 1);  // Remove the selected image from the array
+        updatedPreviews.splice(index, 1);  // Remove the corresponding preview
+
+        setData('images', updatedImages);
+        setNewImagePreviews(updatedPreviews);
+    };
+
+    return (
+        <AuthenticatedLayout>
             <Head title={product ? 'Edit product' : 'Add product'}/>
             <div className={'w-full'}>
                 <div className="py-4 px-4">
@@ -106,16 +128,22 @@ export default function AddEdit({categories, product}) {
                                 <InputError className="mt-2" message={errors.price}/>
                             </div>
 
-                            <div>
-                                <div>Existing images</div>
-                                <div className={'grid grid-cols-6'}>
-                                    {currentImages.map((image) => (<div className={'p-2'} key={image.id}>
-                                            <img alt={''} src={`/storage/${image.path}`} width={200} height={200}/>
-                                            <FontAwesomeIcon onClick={() => deleteProductImage(image.id)} icon={faTrash} className={'text-red-600 ml-2'}/>
-                                        </div>
-                                    ))}
+                            {/* Conditionally render the Existing Images section */}
+                            {currentImages.length > 0 && (
+                                <div>
+                                    <InputLabel htmlFor="existing_images" value="Existing images"/>
+
+                                    <div className={'grid grid-cols-6'}>
+                                        {currentImages.map((image) => (
+                                            <div className={'p-2 relative'} key={image.id}>
+                                                <img alt={''} src={`/storage/${image.path}`} width={200} height={200}/>
+                                                <FontAwesomeIcon onClick={() => deleteProductImage(image.id)}
+                                                                 icon={faTrash} className={'text-red-600 ml-2 absolute top-0 right-0 cursor-pointer'}/>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
+                            )}
 
                             <div>
                                 <InputLabel htmlFor="images" value="Images"/>
@@ -123,13 +151,27 @@ export default function AddEdit({categories, product}) {
                                 <FileInput
                                     id="images"
                                     className="mt-1 block w-full"
-                                    value={data.images}
                                     multiple={true}
-                                    onChange={(e) => setData('images', e.target.files)}
+                                    onChange={handleImageChange}
                                 />
 
                                 <InputError className="mt-2" message={errors.images}/>
                             </div>
+
+                            {newImagePreviews.length > 0 && (
+                                <div>
+                                    <InputLabel htmlFor="new_images" value="New Images"/>
+                                    <div className={'grid grid-cols-6'}>
+                                        {newImagePreviews.map((preview, index) => (
+                                            <div className={'p-2 relative'} key={index}>
+                                                <img alt={''} src={preview} width={200} height={200}/>
+                                                <FontAwesomeIcon onClick={() => deleteNewImage(index)}
+                                                                 icon={faTrash} className={'text-red-600 ml-2 absolute top-0 right-0 cursor-pointer'}/>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
 
                             <div className="flex items-center gap-4">
                                 <PrimaryButton disabled={processing}>Save</PrimaryButton>
@@ -138,5 +180,6 @@ export default function AddEdit({categories, product}) {
                     </div>
                 </div>
             </div>
-        </AuthenticatedLayout>);
+        </AuthenticatedLayout>
+    );
 }

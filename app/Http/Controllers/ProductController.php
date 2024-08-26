@@ -6,15 +6,17 @@ use App\Http\Requests\ProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class ProductController extends Controller
 {
     public function list()
     {
+        // Paginate products
+        $products = Product::with(['category'])->paginate(10)->withQueryString();
+
         return Inertia::render('Products/List', [
-            'products' => Product::with(['category'])->get()
+            'products' => $products
         ]);
     }
 
