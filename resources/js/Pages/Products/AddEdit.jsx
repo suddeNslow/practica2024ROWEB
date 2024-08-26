@@ -13,20 +13,16 @@ export default function AddEdit({ product = {}, categories = [], images = [] }) 
         name: product?.name || '',
         price: product?.price || '',
         description: product?.description || '',
-        images: [], // Array to hold selected files
+        images: [], 
     });
 
-    // State for handling selected image previews
     const [imagePreviews, setImagePreviews] = useState(images.map(img => `/storage/${img.path}`));
 
-    // Handle file input changes
     const handleFileChange = (e) => {
         const files = Array.from(e.target.files);
 
-        // Set the images in the form data
         setData('images', files);
 
-        // Generate preview URLs for the selected images
         const previews = files.map(file => URL.createObjectURL(file));
         setImagePreviews(previews);
     };
@@ -38,7 +34,7 @@ export default function AddEdit({ product = {}, categories = [], images = [] }) 
         const routeName = product.id ? 'products.update' : 'products.store';
         post(route(routeName, product.id ? [product.id] : undefined), {
             preserveScroll: true,
-            forceFormData: true,  // Ensure FormData is used for the request
+            forceFormData: true,  
         });
     };
 

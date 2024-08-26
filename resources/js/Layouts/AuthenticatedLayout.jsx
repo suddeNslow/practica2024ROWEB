@@ -32,7 +32,7 @@ export default function Authenticated({children}) {
                 Products
             </Link>
 
-            <div className={'flex-1'}></div>
+            <div className='grow w-56 py-2 px-3 mx-auto text-white rounded mb-2'></div>
             <Link
                 href={route('profile.edit')}
                 className="w-56 py-2 px-3 mx-auto text-white rounded hover:bg-amber-400 mb-2">
@@ -42,7 +42,7 @@ export default function Authenticated({children}) {
                 className='w-56 mx-auto text-white mb-2' 
                 onSubmit={submit}>
                 <button
-                    className="w-56 py-2 px-3 mx-auto text-white rounded hover:bg-amber-400 mb-2 text-left">
+                    className="w-full h-full py-2 px-3 mx-auto text-white rounded hover:bg-amber-400 mb-2 text-left">
                     Logout
                 </button>
             </form>
