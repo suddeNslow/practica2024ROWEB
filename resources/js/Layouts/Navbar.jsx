@@ -18,9 +18,11 @@ export default function Navbar({auth}) {
                         <ApplicationLogo className="w-10 h-10 fill-current text-white"/>
                     </Link>
 
+                    <Link href="/">
                     <div className='text-3xl text-red-100 font-bold'>
                         Lagoon Pools
                     </div>
+                    </Link>
 
                     <button
                         onClick={handleToggle}
