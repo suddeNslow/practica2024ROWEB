@@ -9,6 +9,8 @@ use Inertia\Inertia;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
+
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -40,7 +42,6 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
         Route::delete('delete/{product}', [ProductController::class, 'delete'])->name('products.delete');
     });
 
-    Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
 });
 
 require __DIR__ . '/auth.php';

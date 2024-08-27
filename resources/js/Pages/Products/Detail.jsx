@@ -24,7 +24,7 @@ const Detail = ({ product = {}, auth = {} }) => {
                                     key={image.id}
                                     src={`/storage/${image.path}`}
                                     alt={name}
-                                    className="w-full mb-4"
+                                    className="w-full max-w-full mb-4"
                                     style={{ maxHeight: '400px', objectFit: 'cover' }}
                                 />
                             ))
@@ -33,6 +33,13 @@ const Detail = ({ product = {}, auth = {} }) => {
                         )}
                     </div>
                 </div>
+                {auth.user && (
+                    <div className="mt-4">
+                        <Link href={route('products.update', [product.id])} className="p-2 bg-amber-500 text-white rounded">
+                            Edit Product
+                        </Link>
+                    </div>
+                )}
             </main>
             <Footer />
         </div>

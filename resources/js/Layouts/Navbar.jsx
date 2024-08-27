@@ -19,7 +19,7 @@ export default function Navbar({auth}) {
                     </Link>
 
                     <div className='text-3xl text-red-100 font-bold'>
-                        Piscina title
+                        Lagoon Pools
                     </div>
 
                     <button

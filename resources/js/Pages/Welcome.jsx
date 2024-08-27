@@ -24,7 +24,8 @@ export default function Welcome({ auth, products, categories }) {
         <>
             <Head title="Welcome" />
             <div className="flex flex-col min-h-screen bg-amber-100">
-                <img src="/storage/banner/banner.jpg" alt="Banner" className="w-full h-[300px] md:h-[500px] object-cover" />
+                <img src="/storage/banner/banner2.jpg" alt="Banner" className="w-full h-[300px] md:h-screen object-cover" />
+                <img src='/storage/banner/logo1.png' alt='logo' className='absolute inset-0 h-[250px] md:h-fit mx-auto md:m-auto left-0 m-4' />
                 <Navbar auth={auth} />
                 <main className="container flex-1 mx-auto my-4">
                     <h1 className={'text-3xl mt-6 mb-4'}>Products</h1>
@@ -39,7 +40,7 @@ export default function Welcome({ auth, products, categories }) {
                         <select
                             value={selectedCategory}
                             onChange={handleFilterChange}
-                            className="p-2 border border-gray-300 rounded"
+                            className="py-2 border border-gray-300 rounded"
                         >
                             <option value="">Select category</option>
                             {categories.map((category) => (
